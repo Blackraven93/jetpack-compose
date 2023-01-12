@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.jetpack.stateexample.ui.theme.StateExampleTheme
@@ -37,26 +38,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DemoScreen() {
+    var textState by rememberSaveable { mutableStateOf("") }
+    val onTextChange = { text: String -> textState = text }
 
+    MyTextField(text = textState, onTextChange = onTextChange)
 }
 
 @Composable
-fun MyTextField() {
-
-    // getValue setValue 존재
-    // var textState = remember { mutableStateOf("") }
-    // var (textValue, setText) = remember { mutableStateOf("") }
-    var textState by remember { mutableStateOf("") }
-
-    // val onTextChange = { text : String -> textState.value = text }
-    // val onTextChange = { text: String -> setText(text) }
-    val onTextChange = {
-        text : String -> textState = text
-    }
-
-    // TextField(value = textState.value, onValueChange = onTextChange)
-    TextField(value = textState, onValueChange = onTextChange)
-
+fun MyTextField(text: String, onTextChange: (String) -> Unit) {
+    TextField(value = text, onValueChange = onTextChange)
 }
 
 @Preview(showBackground = true)
